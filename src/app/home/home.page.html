@@ -1,12 +1,21 @@
 <ion-header>
   <ion-toolbar>
     <ion-title>
-      Ionic Blank
+      My QUICKLIST
     </ion-title>
   </ion-toolbar>
 </ion-header>
 
 <ion-content padding>
-  The world is your oyster.
-  <p>If you get lost, the <a target="_blank" rel="noopener" href="https://ionicframework.com/docs">docs</a> will be your guide.</p>
+  <ion-list *ngIf="checklists">
+    <ion-item *ngFor="let checklist of checklists" (click)="goToChecklist(checklist)">
+      <ion-label>{{ checklist.getChecklistName() }}</ion-label>
+    </ion-item>
+  </ion-list>
+  <ion-list> 
+    <ion-item>
+      <ion-input [(ngModel)]="newChecklistName" type="text" placeholder="Checklist Name"></ion-input>
+    </ion-item>
+  </ion-list>
+  <ion-button (click)="addChecklist(newChecklistName)">Add</ion-button>
 </ion-content>
