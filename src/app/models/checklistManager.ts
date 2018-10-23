@@ -18,7 +18,7 @@ export class ChecklistManager {
         // console.log(this.checklists);
     }
 
-    private createChecklistWithId(checklistName: string, checklistId: number): Hero {
+    private createChecklistWithId(checklistName: string, checklistId: number): Checklist {
         let checklist = new Checklist(checklistName, checklistId);
         this.checklists[checklistId] = checklist;
         return checklist;
@@ -40,8 +40,10 @@ export class ChecklistManager {
         let checklistList: Checklist[] = [];
         console.log(this.checklists);
         for (let i in this.checklists) {
+            console.log('Loop running')
             checklistList.push(this.checklists[i]);
         }
+        console.log('Out of loop')
         return checklistList;
     }
 
