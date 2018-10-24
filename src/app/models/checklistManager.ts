@@ -28,24 +28,25 @@ export class ChecklistManager {
         return nextChecklistId ++;
     }
 
-    // public getChecklists(): Checklist[] {
-    //     let checklistList: Checklist[] = [];
-    //     for (let i in this.checklists) {
-    //         checklistList.push(this.checklists[i]);
-    //     }
-    //     return checklistList;
-    // }
-
     public getChecklists(): Checklist[] {
         let checklistList: Checklist[] = [];
-        console.log(this.checklists);
-        for (let i in Object.keys(this.checklists)) {
-            console.log('Loop running')
+        for (let i in this.checklists) {
+            console.log('running');
             checklistList.push(this.checklists[i]);
         }
-        console.log('Out of loop')
-        return ;
+        return checklistList;
     }
+
+    // public getChecklists(): Checklist[] {
+    //     let checklistList: Checklist[] = [];
+    //     console.log(this.checklists);
+    //     for (let i in Object.keys(this.checklists)) {
+    //         console.log('Loop running')
+    //         checklistList.push(this.checklists[i]);
+    //     }
+    //     console.log('Out of loop')
+    //     return checklistList;
+    // }
 
     // public getChecklists(): Checklist[] {
     //     return [new Checklist('test', 100), new Checklist('test2', 101)];
