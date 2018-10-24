@@ -35,8 +35,9 @@ export class ChecklistService {
 
   public getChecklists(): Observable<Checklist[]> {
     if (this.checklistObservable === undefined) {
-      this.checklistObservable = Observable.create((observer) =>
-        observer.next(this.checklistManager.getChecklists()));
+      this.checklistObservable = Observable.create((observer) => {
+        observer.next(this.checklistManager.getChecklists());
+      });
     }
     return this.checklistObservable;
   } 
@@ -50,6 +51,10 @@ export class ChecklistService {
     //   console.log(data);
     // });
 
+  }
+
+  removeChecklist(checklist: Checklist): void {
+    this.checklistManager.removeChecklist(checklist);
   }
 
 }

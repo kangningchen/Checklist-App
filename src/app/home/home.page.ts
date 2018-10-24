@@ -35,4 +35,9 @@ export class HomePage {
     this.checklistService.addChecklist(newChecklistName);
   }
 
+  removeChecklist(checklist: Checklist): void {
+    this.checklistService.removeChecklist(checklist);
+    console.log('triggered')
+  }
+
 }

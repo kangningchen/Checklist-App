@@ -39,13 +39,17 @@ export class ChecklistManager {
     public getChecklists(): Checklist[] {
         let checklistList: Checklist[] = [];
         console.log(this.checklists);
-        for (let i in this.checklists) {
+        for (let i in Object.keys(this.checklists)) {
             console.log('Loop running')
             checklistList.push(this.checklists[i]);
         }
         console.log('Out of loop')
-        return checklistList;
+        return ;
     }
+
+    // public getChecklists(): Checklist[] {
+    //     return [new Checklist('test', 100), new Checklist('test2', 101)];
+    // }  
 
     public addChecklist(newChecklistName: string) {
         let checklistId = this.getNextChecklistId();
