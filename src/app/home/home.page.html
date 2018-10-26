@@ -7,8 +7,8 @@
 </ion-header>
 
 <ion-content padding>
-  <ion-list *ngIf="checklists">
-    <ion-item *ngFor="let checklist of checklists">
+  <ion-list *ngIf="checklistList">
+    <ion-item *ngFor="let checklist of checklistList">
       <ion-label (click)="goToChecklist(checklist)">{{ checklist.getChecklistName() }}</ion-label>
       <ion-icon name="trash" (click)="removeChecklist(checklist)"></ion-icon>
     </ion-item>

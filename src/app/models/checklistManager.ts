@@ -1,10 +1,10 @@
 import { Checklist } from './checklist';
 
-var nextChecklistId: number = 0;
 
 export class ChecklistManager {
     
-    private checklists: Object = {};
+    public checklists: Object = {};
+ 
 
     public constructor () {}
 
@@ -15,52 +15,46 @@ export class ChecklistManager {
             let checklistId: number = parseInt(checklistData[i]['checklistId']);
             this.createChecklistWithId(checklistName, checklistId);
         }
-        // console.log(this.checklists);
     }
 
-    private createChecklistWithId(checklistName: string, checklistId: number): Checklist {
+    public createChecklistWithId(checklistName: string, checklistId: number): Checklist {
         let checklist = new Checklist(checklistName, checklistId);
         this.checklists[checklistId] = checklist;
         return checklist;
     }
 
     private getNextChecklistId() {
-        return nextChecklistId ++;
+        let maxId = 0;
+        for (let k in this.checklists) {
+            if (this.checklists[k]['checklistId'] > maxId) {
+                maxId = this.checklists[k]['checklistId'];
+            }
+        }
+        maxId ++;
+        return maxId ++;
     }
 
     public getChecklists(): Checklist[] {
         let checklistList: Checklist[] = [];
         for (let i in this.checklists) {
-            console.log('running');
             checklistList.push(this.checklists[i]);
         }
         return checklistList;
     }
 
-    // public getChecklists(): Checklist[] {
-    //     let checklistList: Checklist[] = [];
-    //     console.log(this.checklists);
-    //     for (let i in Object.keys(this.checklists)) {
-    //         console.log('Loop running')
-    //         checklistList.push(this.checklists[i]);
-    //     }
-    //     console.log('Out of loop')
-    //     return checklistList;
-    // }
-
-    // public getChecklists(): Checklist[] {
-    //     return [new Checklist('test', 100), new Checklist('test2', 101)];
-    // }  
 
     public addChecklist(newChecklistName: string) {
         let checklistId = this.getNextChecklistId();
         let checklist = new Checklist (newChecklistName, checklistId);
         this.checklists[checklistId] = checklist;
-        // console.log(this.checklists);
     }
 
     public getChecklistById(id: number): Checklist {
         return this.checklists[id];
+    }
+
+    public getChecklistNameById(id: number): string {
+        return this.checklists[id]['checklistName'];
     }
 
     public getChecklistByName(name: string): Checklist {
@@ -75,6 +69,7 @@ export class ChecklistManager {
 
     public removeChecklist(checklist: Checklist) {
         delete this.checklists[checklist.getChecklistId()];
+        console.log(this.checklists);
     }
 
     public removeChecklistById(id: number) {

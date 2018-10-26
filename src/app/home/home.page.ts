@@ -12,18 +12,16 @@ import { ChecklistService} from '../checklist.service';
 })
 export class HomePage {
 
-  checklists: Checklist[];
+  checklistList: any;
   newChecklistName: string;
   selectedChecklist: Checklist;
 
-  public constructor(private router: Router, private checklistService: ChecklistService) {
-    
+  public constructor(private checklistService: ChecklistService, private router: Router) {
+    this.checklistService.getChecklistObservable().subscribe(checklists => this.checklistList = checklists);
   }
 
   ngOnInit() {
-    this.checklistService.getChecklists().subscribe(checklists => this.checklists = checklists);
-    // console.log(this.checklists);
-    
+    this.checklistList = this.checklistService.getChecklists();
   }
 
   goToChecklist(checklist: Checklist): void {
@@ -37,7 +35,6 @@ export class HomePage {
 
   removeChecklist(checklist: Checklist): void {
     this.checklistService.removeChecklist(checklist);
-    console.log('triggered')
   }
 
 }
