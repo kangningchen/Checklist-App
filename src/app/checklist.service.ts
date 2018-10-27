@@ -101,4 +101,19 @@ export class ChecklistService {
     let updatedChecklists = this.checklistManager.getChecklists();
     this.storage.set('checklists', updatedChecklists);
   }
+
+  checkChecklistItem(checklistItem: ChecklistItem, checklistId: number) {
+    let checklistItems = this.checklistManager.checklists[checklistId]['checklistItems'];
+    // console.log('Hey', checklistItems);
+    for (let i in checklistItems) {
+      if (checklistItems[i].checklistItemId === checklistItem.checklistItemId) {
+        checklistItem.checked = true;
+        // console.log(checklistItem);
+      }
+    }
+    let updatedChecklistItems = this.checklistManager.checklists[checklistId].getChecklistItems();
+    this.checklistItemObserver.next(updatedChecklistItems);
+    let updatedChecklists = this.checklistManager.getChecklists();
+    this.storage.set('checklists', updatedChecklists);
+  }
 }

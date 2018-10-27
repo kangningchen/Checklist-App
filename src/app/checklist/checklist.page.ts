@@ -32,6 +32,10 @@ export class ChecklistPage implements OnInit {
     this.checklistService.removeChecklistItem(checklistItem, this.checklistId);
   }
 
+  check(checklistItem: ChecklistItem) {
+    this.checklistService.checkChecklistItem(checklistItem, this.checklistId);
+  }
+
 
   ngOnInit() {
     this.checklistName = this.checklistService.getChecklistNameById(this.checklistId);

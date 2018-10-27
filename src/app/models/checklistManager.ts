@@ -16,7 +16,8 @@ export class ChecklistManager {
             let checklistItems:any = checklistData[i]['checklistItems'];  
             let checklist = this.createChecklistWithId(checklistName, checklistId);
             for (let i in checklistItems) {
-                checklist.createChecklistItem(checklistItems[i]['checklistItemName']);
+                let checklistItem = checklist.createChecklistItem(checklistItems[i]['checklistItemName']);
+                checklistItem.checked = checklistItems[i].checked;
             }       
 
         }

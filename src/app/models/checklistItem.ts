@@ -1,7 +1,9 @@
 export class ChecklistItem {
 
-    public constructor (private checklistItemName: string,
-                        private checklistItemId: number) {
+    checked: boolean=false;
+
+    public constructor (public checklistItemName: string,
+                        public checklistItemId: number) {
 
     }
 
