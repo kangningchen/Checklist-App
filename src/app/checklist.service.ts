@@ -4,6 +4,7 @@ import { Observable } from 'rxjs/internal/Observable';
 import { Observer } from 'rxjs';
 import { ChecklistManager } from './models/checklistManager';
 import { Checklist } from './models/checklist';
+import { ChecklistItem } from './models/checklistItem';
 
 @Injectable({
   providedIn: 'root'
@@ -11,11 +12,13 @@ import { Checklist } from './models/checklist';
 export class ChecklistService {
 
   private checklistManager: ChecklistManager;
+  private checklist: Checklist;
   private checklistData: Object;
   public checklistList: Checklist[];
   public checklistObservable: Observable<Object>;
   public checklistObserver: Observer<Object>;
-  public checklistUpdate: any;
+  public checklistItemObservable: Observable<Object>;
+  public checklistItemObserver: Observer<Object>;
 
 
 
@@ -34,27 +37,21 @@ export class ChecklistService {
   }
 
 
-  getChecklistObserver() {
-    this.checklistUpdate = Observable.create(observer => {
-      this.checklistObserver = observer;
-    });
-  }
-
 
   public getChecklists(): Checklist[] {
     this.checklistList = this.checklistManager.getChecklists();
     return this.checklistList;
   }
 
-
-  public getChecklistObservable(): Observable<Object> {
-    if (this.checklistObservable === undefined) {
-      this.checklistObservable = Observable.create((observer) => {
-        this.checklistObserver = observer;
+  public getChecklistItemObservable(): Observable<Object> {
+    if (this.checklistItemObservable === undefined) {
+      this.checklistItemObservable = Observable.create((observer) => {
+        this.checklistItemObserver = observer;
       });
     }
-    return this.checklistObservable;
+    return this.checklistItemObservable;
   } 
+
 
   addChecklist(newChecklistName: string): void {
     this.checklistManager.addChecklist(newChecklistName);
@@ -72,5 +69,36 @@ export class ChecklistService {
 
   getChecklistNameById(id: number) {
     return this.checklistManager.getChecklistNameById(id);
+  }
+
+
+  public getChecklistItemsByChecklistId(checklistId: number) {
+    let checklistItems = this.checklistManager.checklists[checklistId]['checklistItems'];
+    return checklistItems;
+  }
+
+  public getChecklistObservable(): Observable<Object> {
+    if (this.checklistObservable === undefined) {
+      this.checklistObservable = Observable.create((observer) => {
+        this.checklistObserver = observer;
+      });
+    }
+    return this.checklistObservable;
+  } 
+
+  public addChecklistItemsByChecklistId(newChecklistItemName: string, checklistId: number) {
+    this.checklistManager.checklists[checklistId].createChecklistItem(newChecklistItemName);
+    let updatedChecklistItems = this.checklistManager.checklists[checklistId].getChecklistItems();
+    this.checklistItemObserver.next(updatedChecklistItems);
+    let updatedChecklists = this.checklistManager.getChecklists();
+    this.storage.set('checklists', updatedChecklists);    
+  }
+
+  removeChecklistItem(checklistItem: ChecklistItem, checklistId: number) {
+    this.checklistManager.checklists[checklistId].removeChecklistItem(checklistItem);
+    let updatedChecklistItems = this.checklistManager.checklists[checklistId].getChecklistItems();
+    this.checklistItemObserver.next(updatedChecklistItems);
+    let updatedChecklists = this.checklistManager.getChecklists();
+    this.storage.set('checklists', updatedChecklists);
   }
 }

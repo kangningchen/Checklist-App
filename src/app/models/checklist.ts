@@ -4,7 +4,7 @@ var nextChecklistItemId: number = 0;
 
 export class Checklist {
 
-    private checklistItems: Object = {};
+    public checklistItems: ChecklistItem[]=[];
 
     public constructor (private checklistName: string, 
                         private checklistId: number) {
@@ -28,17 +28,14 @@ export class Checklist {
     }
 
     public getChecklistItems(): ChecklistItem[] {
-        let checklistItemList: ChecklistItem[] = [];
-        for (let k in this.checklistItems) {
-            checklistItemList.push(this.checklistItems[k]);
-            return checklistItemList;
-        }
+        return this.checklistItems;
     }
 
     public createChecklistItem(checklistItemName: string) {
         let checklistItemId = this.getNextChecklistItemId();
-        let checklistItem = new ChecklistItem(checklistItemName, this.getNextChecklistItemId());
-        this.checklistItems[checklistItemId] = checklistItem;
+        let checklistItem = new ChecklistItem(checklistItemName, checklistItemId);
+        this.checklistItems.push(checklistItem);
+        return checklistItem;
     }
 
     public getChecklistItemById(id: number): ChecklistItem {
@@ -55,8 +52,12 @@ export class Checklist {
         return undefined;
     }
 
-    public removeChecklist(checklistItem: ChecklistItem) {
-        delete this.checklistItems[checklistItem.getChecklistItemId()];
+    public removeChecklistItem(checklistItem: ChecklistItem) {
+        for (let i in this.checklistItems) {
+            if (checklistItem === this.checklistItems[i]) {
+                this.checklistItems.splice(Number(i), 1);
+            }
+        }   
     }
 
     public removeChecklistItemById(id: number) {

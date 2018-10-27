@@ -1,5 +1,5 @@
 import { Checklist } from './checklist';
-
+import { ChecklistItem } from './checklistItem';
 
 export class ChecklistManager {
     
@@ -12,8 +12,13 @@ export class ChecklistManager {
         
         for (let i in checklistData) {
             let checklistName:string = checklistData[i]['checklistName'];
-            let checklistId: number = parseInt(checklistData[i]['checklistId']);
-            this.createChecklistWithId(checklistName, checklistId);
+            let checklistId:number = parseInt(checklistData[i]['checklistId']);  
+            let checklistItems:any = checklistData[i]['checklistItems'];  
+            let checklist = this.createChecklistWithId(checklistName, checklistId);
+            for (let i in checklistItems) {
+                checklist.createChecklistItem(checklistItems[i]['checklistItemName']);
+            }       
+
         }
     }
 

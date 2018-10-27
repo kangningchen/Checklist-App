@@ -13,29 +13,30 @@ export class ChecklistPage implements OnInit {
 
   checklistId: number;
   checklistName: string;
-  checklistItems: ChecklistItem[];
+  checklistItems: any;
+  newChecklistItemName: string;
 
   constructor(private route: ActivatedRoute, private checklistService: ChecklistService) { 
     this.route.params.subscribe((params) => {
       this.checklistId = params['id'];
     });
+    this.checklistService.getChecklistItemObservable().subscribe( checklistItems => this.checklistItems = checklistItems);
   }
 
-  getChecklistName() {
-    this.checklistName = this.checklistService.getChecklistNameById(this.checklistId);
-    console.log('Name', this.checklistName);
+
+  addChecklistItem(newChecklistItemName: string) {
+    this.checklistService.addChecklistItemsByChecklistId(newChecklistItemName, this.checklistId);
   }
 
-  getChecklistItems() {
-
-  }
-
-  addChecklistItems() {
-
+  removeChecklistItem(checklistItem: ChecklistItem) {
+    this.checklistService.removeChecklistItem(checklistItem, this.checklistId);
   }
 
 
   ngOnInit() {
+    this.checklistName = this.checklistService.getChecklistNameById(this.checklistId);
+    this.checklistItems = this.checklistService.getChecklistItemsByChecklistId(this.checklistId);
+    console.log(this.checklistItems);
   }
 
 }
