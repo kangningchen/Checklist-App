@@ -1,8 +1,10 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
+import { ModalController } from '@ionic/angular';
 import { Checklist } from '../models/checklist';
 import { ChecklistItem } from '../models/checklistItem';
 import { ChecklistService} from '../checklist.service';
+import { ModalPage } from '../modal/modal.page';
 
 @Component({
   selector: 'app-checklist',
@@ -16,7 +18,8 @@ export class ChecklistPage implements OnInit {
   checklistItems: any;
   newChecklistItemName: string;
 
-  constructor(private route: ActivatedRoute, private checklistService: ChecklistService) { 
+
+  constructor(private route: ActivatedRoute, private modal: ModalController, private checklistService: ChecklistService) { 
     this.route.params.subscribe((params) => {
       this.checklistId = params['id'];
     });
@@ -31,6 +34,24 @@ export class ChecklistPage implements OnInit {
   removeChecklistItem(checklistItem: ChecklistItem) {
     this.checklistService.removeChecklistItem(checklistItem, this.checklistId);
   }
+
+  async openModal(checklistItem: ChecklistItem) {
+    let checklistItemName = checklistItem.getChecklistItemName();
+    let checklistItemId = checklistItem.getChecklistItemId();
+    let edittedData = {
+      checklistItemName: checklistItemName,
+      checklistItemId: checklistItemId
+    }
+    const modal = await this.modal.create({
+      component: ModalPage,
+    });
+    modal.onDidDismiss().then( data => {
+      edittedData['edittedChecklistItemName'] = data['data'];
+      this.checklistService.editChecklistItemByChecklistItemId(edittedData, this.checklistId);
+    });
+    return await modal.present();
+  }
+
 
   check(checklistItem: ChecklistItem) {
     this.checklistService.checkChecklistItem(checklistItem, this.checklistId);
