@@ -17,6 +17,7 @@ export class ChecklistPage implements OnInit {
   checklistItems: any;
   newChecklistItemName: string;
   priority: string;
+  checked: boolean=false;
 
 
   constructor(private route: ActivatedRoute, private modal: ModalController, private checklistService: ChecklistService) { 
@@ -60,6 +61,10 @@ export class ChecklistPage implements OnInit {
   setPriority() {
     this.checklistService.setChecklistItemPriority(this.checklistId);
     console.log('triggered');
+  }
+
+  notify() {
+    console.log(this.checked);
   }
 
 
