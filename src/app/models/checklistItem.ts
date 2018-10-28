@@ -1,7 +1,7 @@
 export class ChecklistItem {
 
     checked: boolean=false;
-    priority: string="1";
+    priority: string="3";
 
     public constructor (public checklistItemName: string,
                         public checklistItemId: number) {

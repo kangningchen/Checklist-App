@@ -6,6 +6,7 @@ export class Checklist {
 
     checklistItems: ChecklistItem[]=[];
     hideCompleteChecked: boolean=false;
+    sortBy: string;
 
     public constructor (private checklistName: string, 
                         private checklistId: number) {

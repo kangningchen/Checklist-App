@@ -15,10 +15,12 @@ export class ChecklistManager {
             let checklistName:string = checklistData[i]['checklistName'];
             let checklistId:number = parseInt(checklistData[i]['checklistId']);  
             let checklistHideCompleteChecked: boolean = checklistData[i]['hideCompleteChecked'];
+            let checklistSortBy: string = checklistData[i]['sortBy'];
             console.log('hey', checklistHideCompleteChecked);
             let checklistItems:any = checklistData[i]['checklistItems']; 
             let checklist = this.createChecklistWithId(checklistName, checklistId);
             checklist.hideCompleteChecked = checklistHideCompleteChecked;
+            checklist.sortBy = checklistSortBy;
             for (let i in checklistItems) {
                 let checklistItem = checklist.createChecklistItem(checklistItems[i]['checklistItemName']);
                 checklistItem.checked = checklistItems[i].checked;

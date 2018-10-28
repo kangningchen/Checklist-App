@@ -101,6 +101,11 @@ export class ChecklistService {
     return hideCompleteChecked;
   }
 
+  getSortValue(checklistId: number) {
+    let sortBy = this.checklistManager.checklists[checklistId].sortBy;
+    return sortBy; 
+  }
+
   public getChecklistObservable(): Observable<Object> {
     if (this.checklistObservable === undefined) {
       this.checklistObservable = Observable.create((observer) => {
@@ -159,6 +164,37 @@ export class ChecklistService {
     let updatedChecklistItems = this.checklistManager.checklists[checklistId].getChecklistItems();
     console.log(updatedChecklistItems);
     this.checklistItemObserver.next(updatedChecklistItems);
+    let updatedChecklists = this.checklistManager.getChecklists();
+    this.storage.set('checklists', updatedChecklists);  
+  }
+
+  sortChecklistItemsAlphabetically(checklistId: number) {
+    this.checklistManager.checklists[checklistId].sortBy = true;
+    let checklistItems = this.checklistManager.checklists[checklistId].getChecklistItems();
+    checklistItems.sort(function(a, b) {
+      var nameA = a.checklistItemName.toUpperCase(); 
+      var nameB = b.checklistItemName.toUpperCase(); 
+      if (nameA < nameB) {
+        return -1;
+      }
+      if (nameA > nameB) {
+        return 1;
+      }
+      return 0;
+    });
+    // console.log('alpha', checklistItems);
+    this.checklistItemObserver.next(checklistItems);
+    let updatedChecklists = this.checklistManager.getChecklists();
+    this.storage.set('checklists', updatedChecklists);  
+  }
+
+  sortChecklistItemsPriority(checklistId: number) {
+    let checklistItems = this.checklistManager.checklists[checklistId].getChecklistItems();
+    checklistItems.sort(function (a, b) {
+      return Number(a.priority) - Number(b.priority);
+    });
+    // console.log('prio', checklistItems)
+    this.checklistItemObserver.next(checklistItems);
     let updatedChecklists = this.checklistManager.getChecklists();
     this.storage.set('checklists', updatedChecklists);  
   }
