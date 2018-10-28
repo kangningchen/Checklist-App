@@ -130,4 +130,12 @@ export class ChecklistService {
     let updatedChecklists = this.checklistManager.getChecklists();
     this.storage.set('checklists', updatedChecklists);
   }
+
+  setChecklistItemPriority(checklistId: number) {
+    let updatedChecklistItems = this.checklistManager.checklists[checklistId].getChecklistItems();
+    console.log(updatedChecklistItems);
+    this.checklistItemObserver.next(updatedChecklistItems);
+    let updatedChecklists = this.checklistManager.getChecklists();
+    this.storage.set('checklists', updatedChecklists);  
+  }
 }

@@ -6,7 +6,7 @@
   
   <ion-content padding>
 
-    <ion-list *ngIf="checklistItems">
+    <!-- <ion-list *ngIf="checklistItems">
       <ion-item *ngFor="let checklistItem of checklistItems">
         <ion-icon name="ios-checkbox" *ngIf="checklistItem.checked"></ion-icon>
         <ion-icon name="ios-checkbox-outline" (click)="check(checklistItem)" [hidden]="checklistItem.checked"></ion-icon>
@@ -14,7 +14,30 @@
         <ion-icon name="md-create" (click)="openModal(checklistItem)"></ion-icon>
         <ion-icon name="trash" (click)="removeChecklistItem(checklistItem)"></ion-icon>
       </ion-item>
+    </ion-list> -->
+
+
+    <ion-list *ngIf="checklistItems">
+      <ion-list *ngFor="let checklistItem of checklistItems">
+        <ion-item>
+          <ion-icon name="ios-checkbox" *ngIf="checklistItem.checked"></ion-icon>
+          <ion-icon name="ios-checkbox-outline" (click)="check(checklistItem)" [hidden]="checklistItem.checked"></ion-icon>
+          <ion-label>{{ checklistItem.getChecklistItemName() }}</ion-label>
+          <ion-icon name="md-create" (click)="openModal(checklistItem)"></ion-icon>
+          <ion-icon name="trash" (click)="removeChecklistItem(checklistItem)"></ion-icon>
+        </ion-item>
+        <ion-item>
+          <ion-label>Priority</ion-label>
+          <ion-select value="1" ok-text="Okay" cancel-text="Dismiss" [(ngModel)]="checklistItem.priority" (ionChange)="setPriority()">
+            <ion-select-option value="1">Low</ion-select-option>
+            <ion-select-option value="2">Medium</ion-select-option>
+            <ion-select-option value="3">High</ion-select-option>
+          </ion-select>
+        </ion-item>
+      </ion-list>
     </ion-list>
+
+
 
     <ion-list> 
       <ion-item>

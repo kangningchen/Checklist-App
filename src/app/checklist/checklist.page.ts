@@ -1,7 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { ModalController } from '@ionic/angular';
-import { Checklist } from '../models/checklist';
 import { ChecklistItem } from '../models/checklistItem';
 import { ChecklistService} from '../checklist.service';
 import { ModalPage } from '../modal/modal.page';
@@ -17,6 +16,7 @@ export class ChecklistPage implements OnInit {
   checklistName: string;
   checklistItems: any;
   newChecklistItemName: string;
+  priority: string;
 
 
   constructor(private route: ActivatedRoute, private modal: ModalController, private checklistService: ChecklistService) { 
@@ -55,6 +55,11 @@ export class ChecklistPage implements OnInit {
 
   check(checklistItem: ChecklistItem) {
     this.checklistService.checkChecklistItem(checklistItem, this.checklistId);
+  }
+
+  setPriority() {
+    this.checklistService.setChecklistItemPriority(this.checklistId);
+    console.log('triggered');
   }
 
 

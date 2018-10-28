@@ -11,6 +11,7 @@ export class ChecklistManager {
     public initFromStorage(checklistData: Object) {
         
         for (let i in checklistData) {
+            console.log(checklistData);
             let checklistName:string = checklistData[i]['checklistName'];
             let checklistId:number = parseInt(checklistData[i]['checklistId']);  
             let checklistItems:any = checklistData[i]['checklistItems'];  
@@ -18,6 +19,7 @@ export class ChecklistManager {
             for (let i in checklistItems) {
                 let checklistItem = checklist.createChecklistItem(checklistItems[i]['checklistItemName']);
                 checklistItem.checked = checklistItems[i].checked;
+                checklistItem.priority = checklistItems[i].priority;
             }       
 
         }
