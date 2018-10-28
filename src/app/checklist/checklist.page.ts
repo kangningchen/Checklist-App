@@ -17,7 +17,7 @@ export class ChecklistPage implements OnInit {
   checklistItems: any;
   newChecklistItemName: string;
   priority: string;
-  checked: boolean=false;
+  hideCompleteChecked: boolean=false;
 
 
   constructor(private route: ActivatedRoute, private modal: ModalController, private checklistService: ChecklistService) { 
@@ -30,10 +30,12 @@ export class ChecklistPage implements OnInit {
 
   addChecklistItem(newChecklistItemName: string) {
     this.checklistService.addChecklistItemsByChecklistId(newChecklistItemName, this.checklistId);
+    this.hideComplete();
   }
 
   removeChecklistItem(checklistItem: ChecklistItem) {
     this.checklistService.removeChecklistItem(checklistItem, this.checklistId);
+    this.hideComplete();
   }
 
   async openModal(checklistItem: ChecklistItem) {
@@ -56,6 +58,7 @@ export class ChecklistPage implements OnInit {
 
   check(checklistItem: ChecklistItem) {
     this.checklistService.checkChecklistItem(checklistItem, this.checklistId);
+    this.hideComplete();
   }
 
   setPriority() {
@@ -63,10 +66,16 @@ export class ChecklistPage implements OnInit {
     console.log('triggered');
   }
 
-  notify() {
-    console.log(this.checked);
+  hideComplete() {
+    if (this.hideCompleteChecked === true) {
+      this.checklistItems = this.checklistService.getUncompletedChecklistItems(this.checklistId);
+      // console.log(this.hideCompleteChecked);
+    }
+    else {
+      this.checklistItems = this.checklistService.getChecklistItemsByChecklistId(this.checklistId);
+    }
+    
   }
-
 
   ngOnInit() {
     this.checklistName = this.checklistService.getChecklistNameById(this.checklistId);

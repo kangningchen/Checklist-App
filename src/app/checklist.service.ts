@@ -74,7 +74,20 @@ export class ChecklistService {
 
   public getChecklistItemsByChecklistId(checklistId: number) {
     let checklistItems = this.checklistManager.checklists[checklistId]['checklistItems'];
+    this.checklistItemObserver.next(checklistItems);
     return checklistItems;
+  }
+
+  getUncompletedChecklistItems(checklistId: number) {
+    let checklistItems = this.checklistManager.checklists[checklistId]['checklistItems'];
+    let UncompletedChecklistItems = [];
+    for (let i in checklistItems) {
+      if (checklistItems[i].checked === false) {
+        UncompletedChecklistItems.push(checklistItems[i]);
+      }
+    }
+    this.checklistItemObserver.next(UncompletedChecklistItems);
+    return UncompletedChecklistItems;
   }
 
   public getChecklistObservable(): Observable<Object> {
