@@ -116,7 +116,14 @@ export class ChecklistService {
   } 
 
   public addChecklistItemsByChecklistId(newChecklistItemName: string, checklistId: number) {
-    this.checklistManager.checklists[checklistId].createChecklistItem(newChecklistItemName);
+    let checklist = this.checklistManager.checklists[checklistId];
+    checklist.createChecklistItem(newChecklistItemName);
+    if (checklist.sortBy === 'sortAlphabet') {
+      this.sortChecklistItemsAlphabetically(checklistId);
+    }
+    if (checklist.sortBy === 'sortPriority') {
+      this.sortChecklistItemsPriority(checklistId);
+    }
     let updatedChecklistItems = this.checklistManager.checklists[checklistId].getChecklistItems();
     this.checklistItemObserver.next(updatedChecklistItems);
     let updatedChecklists = this.checklistManager.getChecklists();
@@ -124,7 +131,14 @@ export class ChecklistService {
   }
 
   removeChecklistItem(checklistItem: ChecklistItem, checklistId: number) {
-    this.checklistManager.checklists[checklistId].removeChecklistItem(checklistItem);
+    let checklist = this.checklistManager.checklists[checklistId];
+    checklist.removeChecklistItem(checklistItem);
+    if (checklist.sortBy === 'sortAlphabet') {
+      this.sortChecklistItemsAlphabetically(checklistId);
+    }
+    if (checklist.sortBy === 'sortPriority') {
+      this.sortChecklistItemsPriority(checklistId);
+    }
     let updatedChecklistItems = this.checklistManager.checklists[checklistId].getChecklistItems();
     this.checklistItemObserver.next(updatedChecklistItems);
     let updatedChecklists = this.checklistManager.getChecklists();
@@ -161,6 +175,13 @@ export class ChecklistService {
   }
 
   setChecklistItemPriority(checklistId: number) {
+    let checklist = this.checklistManager.checklists[checklistId];
+    if (checklist.sortBy === 'sortAlphabet') {
+      this.sortChecklistItemsAlphabetically(checklistId);
+    }
+    if (checklist.sortBy === 'sortPriority') {
+      this.sortChecklistItemsPriority(checklistId);
+    }
     let updatedChecklistItems = this.checklistManager.checklists[checklistId].getChecklistItems();
     console.log(updatedChecklistItems);
     this.checklistItemObserver.next(updatedChecklistItems);
@@ -169,7 +190,7 @@ export class ChecklistService {
   }
 
   sortChecklistItemsAlphabetically(checklistId: number) {
-    this.checklistManager.checklists[checklistId].sortBy = true;
+    this.checklistManager.checklists[checklistId].sortBy = 'sortAlphabet';
     let checklistItems = this.checklistManager.checklists[checklistId].getChecklistItems();
     checklistItems.sort(function(a, b) {
       var nameA = a.checklistItemName.toUpperCase(); 
@@ -189,6 +210,7 @@ export class ChecklistService {
   }
 
   sortChecklistItemsPriority(checklistId: number) {
+    this.checklistManager.checklists[checklistId].sortBy = 'sortPriority';
     let checklistItems = this.checklistManager.checklists[checklistId].getChecklistItems();
     checklistItems.sort(function (a, b) {
       return Number(a.priority) - Number(b.priority);

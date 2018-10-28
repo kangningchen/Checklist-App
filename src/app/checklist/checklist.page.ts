@@ -85,10 +85,12 @@ export class ChecklistPage implements OnInit {
   sortChecklistItems() {
     if (this.sort === 'sortAlphabet') {
       this.checklistService.sortChecklistItemsAlphabetically(this.checklistId);
+      this.hideComplete();
     }
 
     if (this.sort === 'sortPriority') {
       this.checklistService.sortChecklistItemsPriority(this.checklistId);
+      this.hideComplete();
     }
   }
 
