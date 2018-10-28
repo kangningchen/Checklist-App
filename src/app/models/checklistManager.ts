@@ -14,8 +14,11 @@ export class ChecklistManager {
             console.log(checklistData);
             let checklistName:string = checklistData[i]['checklistName'];
             let checklistId:number = parseInt(checklistData[i]['checklistId']);  
-            let checklistItems:any = checklistData[i]['checklistItems'];  
+            let checklistHideCompleteChecked: boolean = checklistData[i]['hideCompleteChecked'];
+            console.log('hey', checklistHideCompleteChecked);
+            let checklistItems:any = checklistData[i]['checklistItems']; 
             let checklist = this.createChecklistWithId(checklistName, checklistId);
+            checklist.hideCompleteChecked = checklistHideCompleteChecked;
             for (let i in checklistItems) {
                 let checklistItem = checklist.createChecklistItem(checklistItems[i]['checklistItemName']);
                 checklistItem.checked = checklistItems[i].checked;

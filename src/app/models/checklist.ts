@@ -4,7 +4,8 @@ var nextChecklistItemId: number = 0;
 
 export class Checklist {
 
-    public checklistItems: ChecklistItem[]=[];
+    checklistItems: ChecklistItem[]=[];
+    hideCompleteChecked: boolean=false;
 
     public constructor (private checklistName: string, 
                         private checklistId: number) {

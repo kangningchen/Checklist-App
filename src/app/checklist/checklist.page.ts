@@ -17,13 +17,14 @@ export class ChecklistPage implements OnInit {
   checklistItems: any;
   newChecklistItemName: string;
   priority: string;
-  hideCompleteChecked: boolean=false;
+  hideCompleteChecked: boolean;
 
 
   constructor(private route: ActivatedRoute, private modal: ModalController, private checklistService: ChecklistService) { 
     this.route.params.subscribe((params) => {
       this.checklistId = params['id'];
     });
+    // this.hideCompleteChecked = this.checklistService.getHideCompleteValue(this.checklistId);
     this.checklistService.getChecklistItemObservable().subscribe( checklistItems => this.checklistItems = checklistItems);
   }
 
@@ -77,9 +78,15 @@ export class ChecklistPage implements OnInit {
     
   }
 
+  getHideCompleteValue() {
+    this.checklistService.getHideCompleteValue(this.checklistId);
+  }
+
   ngOnInit() {
     this.checklistName = this.checklistService.getChecklistNameById(this.checklistId);
-    this.checklistItems = this.checklistService.getChecklistItemsByChecklistId(this.checklistId);
+    this.hideCompleteChecked = this.checklistService.getHideCompleteValue(this.checklistId);
+    // this.checklistItems = this.checklistService.getChecklistItemsByChecklistId(this.checklistId);
+    this.hideComplete();
     console.log(this.checklistItems);
   }
 

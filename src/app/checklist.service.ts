@@ -73,12 +73,18 @@ export class ChecklistService {
 
 
   public getChecklistItemsByChecklistId(checklistId: number) {
+    this.checklistManager.checklists[checklistId].hideCompleteChecked = false;
+    let updatedChecklists = this.checklistManager.getChecklists();
+    this.storage.set('checklists', updatedChecklists);    
     let checklistItems = this.checklistManager.checklists[checklistId]['checklistItems'];
     this.checklistItemObserver.next(checklistItems);
     return checklistItems;
   }
 
   getUncompletedChecklistItems(checklistId: number) {
+    this.checklistManager.checklists[checklistId].hideCompleteChecked = true;
+    let updatedChecklists = this.checklistManager.getChecklists();
+    this.storage.set('checklists', updatedChecklists);    
     let checklistItems = this.checklistManager.checklists[checklistId]['checklistItems'];
     let UncompletedChecklistItems = [];
     for (let i in checklistItems) {
@@ -88,6 +94,11 @@ export class ChecklistService {
     }
     this.checklistItemObserver.next(UncompletedChecklistItems);
     return UncompletedChecklistItems;
+  }
+
+  getHideCompleteValue(checklistId: number) {
+    let hideCompleteChecked = this.checklistManager.checklists[checklistId].hideCompleteChecked;
+    return hideCompleteChecked;
   }
 
   public getChecklistObservable(): Observable<Object> {
